@@ -1,0 +1,36 @@
+import java.util.Scanner;
+//12868	112
+public class Main_BJ_14650_걷다보니신천역삼 {
+
+	static int ans=0;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int N = sc.nextInt();
+
+		calc(0,0,N);
+
+		System.out.println(ans);
+		sc.close();
+	}
+	
+	static void calc(int n, int sum, int N) {
+//		System.out.println("n, sum : "+n+" "+sum);
+		for(int i=0;i<3;i++) {
+			//시작이 0인경우 제외
+			if(n==0 && i==0)continue;
+			
+			// N의 자리수를 맞춘 경우
+			if(n==N) {
+				// 3의 배수 여부 판단
+				if(sum%3==0) {
+					ans++;
+					return;
+				}
+			}else {
+				// 뒤에 해당 숫자를 붙여서 넘김(3배수확인용이어서 합만 넘김)
+				calc(n+1, sum+i, N);
+			}
+		}
+	}
+}
