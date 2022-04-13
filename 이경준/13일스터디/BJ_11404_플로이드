@@ -1,0 +1,60 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+//43276	540
+public class Main_BJ_11404_플로이드 {
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int N = Integer.parseInt(br.readLine());
+		int M = Integer.parseInt(br.readLine());
+		
+		int arr[][] = new int [N][N];
+		
+		for(int i=0;i<N;i++) {
+			Arrays.fill(arr[i], 9999999);
+			arr[i][i]=0;
+		}
+		
+		StringTokenizer st;
+		for(int i=0;i<M;i++) {
+			st=new StringTokenizer(br.readLine());
+			int from = Integer.parseInt(st.nextToken())-1;
+			int to = Integer.parseInt(st.nextToken())-1;
+			int weight = Integer.parseInt(st.nextToken());
+			
+			if(arr[from][to]==9999999) {
+				arr[from][to]=weight;				
+			}else {
+				arr[from][to]=Math.min(weight, arr[from][to]);				
+			}
+		}
+//		for(int i=0;i<N;i++) {
+//			System.out.println(Arrays.toString(arr[i]));
+//		}
+		for(int k=0;k<N;k++) {
+			for(int i=0;i<N;i++) {
+				if(k==i)continue;
+				for(int j=0;j<N;j++) {
+					if(k==j||j==i)continue;
+					arr[i][j] = Math.min(arr[i][j], arr[i][k]+arr[k][j]);
+				}
+			}
+		}
+		for(int i=0;i<N;i++) {
+			for(int j=0;j<N;j++) {
+				if(arr[i][j]==9999999)
+					arr[i][j]=0;
+			}
+		}
+		for(int i=0;i<N;i++) {
+			for(int j=0;j<N;j++) {
+				System.out.print(arr[i][j]+" ");
+			}
+			System.out.println();
+		}
+
+	}
+}
