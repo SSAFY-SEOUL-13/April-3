@@ -1,0 +1,50 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+//16428	132
+public class Main_BJ_16953_AtoB {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		long from = sc.nextInt();
+		long to = sc.nextInt();
+
+		Queue<Long> q = new LinkedList<>();
+
+		q.offer(from);
+
+		int cnt = 0;
+		boolean find=false;
+		while(!q.isEmpty()) {
+			int size = q.size();
+			
+			for(int i=0;i<size;i++) {
+				long cur = q.poll();
+				if(cur==to) {
+					find=true;
+					break;
+				}
+				long doublecur = cur*2;
+				
+				if(cur<doublecur && doublecur<=to) {
+					q.offer(doublecur);
+
+				}
+				
+				long plus1 = cur*10+1;
+				if(cur<plus1 && plus1<=to ) {
+					q.offer(plus1);
+
+				}
+				
+			}
+			if(find)break;
+			cnt++;
+		}
+		
+		if(find) System.out.println(cnt+1);
+		else System.out.println(-1);
+		sc.close();
+	}
+}
