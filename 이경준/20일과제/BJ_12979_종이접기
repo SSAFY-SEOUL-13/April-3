@@ -1,0 +1,56 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+//11548	84
+public class Main_BJ_12979_종이접기 {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		int W = Integer.parseInt(st.nextToken());
+		int H = Integer.parseInt(st.nextToken());
+		int A = Integer.parseInt(st.nextToken());
+		int ans = -1;
+		int a=0;
+		int b=0;
+		// 높이가될 a의 값들
+		for(a=1;a<=A;a++) {
+			// 접어서 더 커질순 없으므로 W보다 크면 없음
+			if(a>W) break;
+			//a와b의 곱으로 A를 구할 수 있는경우
+			if(A%a==0) {
+				b = A/a;
+				// H보다 크면 불가능함
+				if(b>H) continue;
+//				System.out.println(a+" "+b);
+				// 만들수 있는 a, b의 조합이 나온경우
+				if(ans==-1) {
+					ans = getans(W,a)+getans(H,b);
+				}else {
+					ans = Math.min(ans, getans(W,a)+getans(H,b));
+					
+				}
+			}
+		}
+//		ans = getans(W, H);
+		System.out.println(ans);
+	}
+
+	// W를 몇번 접어야a가 되는지 구함
+	private static int getans(int w, int a) {
+		int ans = 0;
+		while(true) {
+//			System.out.println(w);
+			if(w==a)break;
+			// 한번에 a로 접을수 있는경우
+			if(w-a<=w/2) a=w;
+			// 한번에 a로 못접는경우 최대치로 접는다
+			else w-=w/2;
+			ans++;
+		}
+		return ans;
+	}
+}
