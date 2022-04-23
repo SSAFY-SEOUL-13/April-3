@@ -1,0 +1,68 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+//87828	388
+public class Main_BJ_9549_암호화된비밀번호 {
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int T = Integer.parseInt(br.readLine());
+		int an = 26;
+		for(int tc = 1 ; tc<=T;tc++) {
+			
+			String to = br.readLine();
+			String from = br.readLine();
+			int pwlength = from.length();
+			int tolength = to.length();
+			// 1번 : 입력 문자열 기준으로 가진 알파벳으로 만들수 있는 모든 조합
+			// 2번 : 1번의 앞에 무작위 갯수의 문자 추가
+			// 3번 : 2번의 뒤에 무작위 갯수의 문자 추가
+			
+			// --> 암호화된 값은 입력된 알파벳의 조합을 부분문자열로 가지고있다!
+			// 알파벳의 갯수를 사용해 원래 비밀번호의 길이만큼을 윈도우로 확인하며 지나가자
+			
+			// 알파벳의 갯수를 구한다.
+			int alpanum[] = new int [26];
+//			int ansnum = 0;
+			for(int i=0;i<pwlength;i++) {
+				alpanum[from.charAt(i)-'a']++;
+//				ansnum = ansnum | (1<<from.charAt(i)-'a');
+				
+			}
+//			System.out.println(ansnum);
+			
+			// 비밀번호만큼의 길이를 가진 window를 사용한다.
+			int window[] = new int [26];
+			for(int i=0;i<pwlength;i++) {
+				window[to.charAt(i)-'a']++;
+			}
+			
+			boolean find=false;
+			if(check(alpanum, window)) {
+				System.out.println("YES");
+				find = true;
+				continue;
+			}
+			for(int i=1;i<tolength-pwlength+1;i++) {
+				window[to.charAt(i-1)-'a']--;
+				window[to.charAt(i+pwlength-1)-'a']++;
+//				System.out.println(to.charAt(i-1)+" "+to.charAt(i+pwlength-1));
+				if(check(alpanum, window)) {
+					System.out.println("YES");
+					find=true;
+					break;
+				}
+			}
+			if(find) continue;
+			else System.out.println("NO");
+		}
+	}
+
+	private static boolean check(int[] alpanum, int[] window) {
+		for(int i=0;i<26;i++) {
+			if(alpanum[i]!=window[i]) return false;
+		}
+		return true;
+	}
+}
