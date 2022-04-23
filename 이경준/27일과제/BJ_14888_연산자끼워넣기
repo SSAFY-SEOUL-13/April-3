@@ -1,0 +1,79 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+//12792	108
+public class Main_BJ_14888_연산자끼워넣기 {
+	static int N,inputs[],inputs2[];
+	static int min = Integer.MAX_VALUE;
+	static int max = Integer.MIN_VALUE;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		N = Integer.parseInt(br.readLine());
+		
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		inputs = new int [N];
+		for(int i=0;i<N;i++) {
+			inputs[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		st = new StringTokenizer(br.readLine());
+		
+		inputs2 = new int [4];
+		for(int i=0;i<4;i++) {
+			inputs2[i] = Integer.parseInt(st.nextToken());
+		}
+		
+		//1. 연산자의 순서를 부분집합을 사용해 배치
+		comb(0,new int [N-1]);
+		
+		System.out.println(max);
+		System.out.println(min);
+	}
+	private static void comb(int cnt, int[] order) {
+		//N-1개의 순서를 얻어온경우
+		if(cnt==N-1) {
+			// 순서대로 값을 연산함
+//			System.out.println(Arrays.toString(order));
+			getans(order);
+			return;
+		}
+		// 연산자 4개(0~3)을 모두 넣어봄
+		for(int i=0;i<4;i++) {
+			// 만약 해당 연산자를 모두 사용했다면 넘어감
+			if(inputs2[i]==0) continue;
+			
+			// 해당 순서에 연산자 등록후 남은 연산자 수 감소
+			order[cnt] = i;
+			inputs2[i]--;
+			comb(cnt+1, order);
+			inputs2[i]++;
+		}
+	}
+	
+	private static void getans(int[] order) {
+		int ans = inputs[0];
+		for(int i=0;i<N-1;i++) {
+			switch (order[i]) {
+			case 0: // +
+				ans += inputs[i+1]; 
+				break;
+			case 1: // -
+				ans -= inputs[i+1]; 
+				break;
+			case 2: // *
+				ans *= inputs[i+1]; 
+				break;
+			case 3: // /
+				ans /= inputs[i+1]; 
+				break;
+			}
+			
+		}
+		min = Math.min(ans, min);
+		max = Math.max(ans, max);
+	}
+}
