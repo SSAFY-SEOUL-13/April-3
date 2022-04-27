@@ -1,0 +1,51 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+//33064	232
+public class Main_BJ_1593_문자해독 {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		
+		int n = Integer.parseInt(st.nextToken());
+		int m = Integer.parseInt(st.nextToken());
+		
+		String a = br.readLine();
+		String b = br.readLine();
+		
+		int[] wAlpha = new int[52];
+		for(int i=0; i<n; i++) {
+			char cur = a.charAt(i);
+			if(cur<'a') wAlpha[cur-'A']++;
+			else wAlpha[cur-'a'+26]++;
+		}
+		
+		int[] sAlpha = new int[52];
+		int next, len=0, answer=0, from=0;
+		for(int i=0; i<m; i++) {
+			char cur = b.charAt(i);
+			if(cur<'a') next = cur-'A';
+			else next = cur-'a'+26;
+			len++;
+			sAlpha[next]++;
+			if(len==n) {
+				
+				if(same(wAlpha, sAlpha)) answer++;
+				char cfrom = b.charAt(from);
+				if(cfrom<'a') sAlpha[cfrom-'A']--;
+				else sAlpha[cfrom-'a'+26]--;
+				from++; len--;
+			}
+		}
+		System.out.print(answer);
+	}
+	static boolean same(int[] w, int[] s) {
+		for(int i=0; i<52; i++)
+			if(w[i]!=s[i]) return false;
+		return true;
+	} 
+}
